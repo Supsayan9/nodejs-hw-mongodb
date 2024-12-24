@@ -1,22 +1,30 @@
-import { Router } from 'express';
-import * as Controller from '../controlers/contacts.js';
-import ctrlWrapper from '../utils/ctrlWrapper.js';
+import express from 'express';
+import {
+  getContacts,
+  getContactById,
+  createContact,
+  updateContact,
+  deleteContact,
+} from '../controllers/contacts.js';
+import { createContactSchema, updateContactSchema } from '../utils/schemas.js';
+import validateBody from '../middlewares/validateBody.js';
+import isValidId from '../middlewares/isValidId.js';
 
-const contactsRouter = Router();
+const router = express.Router();
 
-contactsRouter.get('/', ctrlWrapper(Controller.getAllContactsController));
-contactsRouter.get(
-  '/:contactId',
-  ctrlWrapper(Controller.getContactByIdController),
-);
-contactsRouter.post('/', ctrlWrapper(Controller.addContactController));
-contactsRouter.patch(
-  '/:contactId',
-  ctrlWrapper(Controller.patchContactController),
-);
-contactsRouter.delete(
-  '/:contactId',
-  ctrlWrapper(Controller.deleteContactController),
+// Маршрути для контактів
+router.get('/contacts', getContacts);
+router.get('/contacts/:contactId', isValidId, getContactById);
+
+router.post('/contacts', validateBody(createContactSchema), createContact);
+
+router.patch(
+  '/contacts/:contactId',
+  isValidId,
+  validateBody(updateContactSchema),
+  updateContact,
 );
 
-export default contactsRouter;
+router.delete('/contacts/:contactId', isValidId, deleteContact);
+
+export default router;
