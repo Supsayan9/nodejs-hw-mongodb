@@ -39,7 +39,6 @@ export const createContact = async (req, res) => {
   try {
     const { name } = req.body;
 
-    // Проверка на длину имени
     if (name.length < 3) {
       return res
         .status(400)
