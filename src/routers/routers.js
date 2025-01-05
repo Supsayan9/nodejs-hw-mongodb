@@ -12,7 +12,6 @@ import isValidId from '../middlewares/isValidId.js';
 
 const router = express.Router();
 
-// Маршрути для контактів
 router.get('/contacts', getContacts);
 router.get('/contacts/:contactId', isValidId, getContactById);
 
