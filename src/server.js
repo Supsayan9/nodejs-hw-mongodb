@@ -1,25 +1,30 @@
-// server.js
 import express from 'express';
-import {
-  getContacts,
-  createContact,
-  getContactById,
-  updateContact,
-  deleteContact,
-} from './controlers/contacts.js';
+import pino from 'pino-http';
+import cors from 'cors';
+import errorHandler from './middlewares/errorHandler.js';
+import notFoundHandler from './middlewares/notFoundHandler.js';
+import { env } from './utils/env.js';
+import contactsRouter from './routers/contacts.js';
 
-const app = express();
-
-app.use(express.json());
-
-app.get('/contacts', getContacts);
-app.get('/contacts/:contactId', getContactById);
-app.post('/contacts', createContact);
-app.put('/contacts/:contactId', updateContact);
-app.delete('/contacts/:contactId', deleteContact);
+const PORT = Number(env('PORT', '3000'));
 
 export const setupServer = () => {
-  app.listen(process.env.PORT || 4000, () => {
-    console.log(`Server running on port ${process.env.PORT || 4000}`);
+  const app = express();
+  app.use(express.json());
+  app.use(cors());
+  app.use(
+    pino({
+      transport: {
+        target: 'pino-pretty',
+      },
+    }),
+  );
+
+  app.use(contactsRouter);
+  app.use(notFoundHandler);
+  app.use(errorHandler);
+
+  app.listen(PORT, () => {
+    console.log(`Server is running on ${PORT}`);
   });
 };
