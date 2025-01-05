@@ -1,3 +1,4 @@
+import createHttpError from 'http-errors';
 import {
   getAllContacts,
   getContactById as serviceGetContactById,
@@ -5,6 +6,21 @@ import {
   updateContact as serviceUpdateContact,
   deleteContact as serviceDeleteContact,
 } from '../services/contacts.js';
+
+const validateName = (name) => {
+  if (!name || name.length < 3) {
+    throw new createHttpError(400, 'Name must be at least 3 characters long');
+  }
+};
+
+const validateContactId = (contactId) => {
+  if (!contactId) {
+    throw new createHttpError(400, 'Contact ID is required');
+  }
+  if (!/^[0-9a-fA-F]{24}$/.test(contactId)) {
+    throw new createHttpError(400, 'Invalid Contact ID format');
+  }
+};
 
 export const getContacts = async (req, res) => {
   try {
@@ -19,77 +35,83 @@ export const getContacts = async (req, res) => {
   }
 };
 
-export const getContactById = async (req, res) => {
+export const getContactById = async (req, res, next) => {
+  const { contactId } = req.params;
+
   try {
-    const contact = await serviceGetContactById(req.params.contactId);
+    validateContactId(contactId);
+
+    const contact = await serviceGetContactById(contactId);
     if (!contact) {
-      return res.status(404).json({ message: 'Contact not found' });
+      return next(createHttpError(404, 'Contact not found'));
     }
+
     res.status(200).json({
       status: 200,
       message: 'Contact fetched successfully',
       data: contact,
     });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    next(error);
   }
 };
 
-export const createContact = async (req, res) => {
-  try {
-    const { name } = req.body;
+export const createContact = async (req, res, next) => {
+  const { name } = req.body;
 
-    if (name.length < 3) {
-      return res
-        .status(400)
-        .json({ message: 'Name must be at least 3 characters long' });
-    }
+  try {
+    validateName(name);
 
     const newContact = await serviceCreateContact(req.body);
+
     res.status(201).json({
       status: 201,
       message: 'Contact created successfully',
       data: newContact,
     });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    next(error);
   }
 };
 
-export const updateContact = async (req, res) => {
+export const updateContact = async (req, res, next) => {
+  const { contactId } = req.params;
+  const { name } = req.body;
+
   try {
-    const { name } = req.body;
-    if (name.length < 3) {
-      return res
-        .status(400)
-        .json({ message: 'Name must be at least 3 characters long' });
+    validateContactId(contactId);
+    if (name) {
+      validateName(name);
     }
 
-    const updatedContact = await serviceUpdateContact(
-      req.params.contactId,
-      req.body,
-    );
+    const updatedContact = await serviceUpdateContact(contactId, req.body);
     if (!updatedContact) {
-      return res.status(404).json({ message: 'Contact not found' });
+      return next(createHttpError(404, 'Contact not found'));
     }
+
     res.status(200).json({
       status: 200,
       message: 'Contact updated successfully',
       data: updatedContact,
     });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    next(error);
   }
 };
 
-export const deleteContact = async (req, res) => {
+export const deleteContact = async (req, res, next) => {
+  const { contactId } = req.params;
+
   try {
-    const deleted = await serviceDeleteContact(req.params.contactId);
+    validateContactId(contactId);
+
+    const deleted = await serviceDeleteContact(contactId);
     if (!deleted) {
-      return res.status(404).json({ message: 'Contact not found' });
+      return next(createHttpError(404, 'Contact not found'));
     }
+
     res.status(204).end();
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    next(error);
   }
 };
