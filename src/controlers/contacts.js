@@ -37,6 +37,15 @@ export const getContactById = async (req, res) => {
 
 export const createContact = async (req, res) => {
   try {
+    const { name } = req.body;
+
+    // Проверка на длину имени
+    if (name.length < 3) {
+      return res
+        .status(400)
+        .json({ message: 'Name must be at least 3 characters long' });
+    }
+
     const newContact = await serviceCreateContact(req.body);
     res.status(201).json({
       status: 201,
@@ -50,6 +59,13 @@ export const createContact = async (req, res) => {
 
 export const updateContact = async (req, res) => {
   try {
+    const { name } = req.body;
+    if (name.length < 3) {
+      return res
+        .status(400)
+        .json({ message: 'Name must be at least 3 characters long' });
+    }
+
     const updatedContact = await serviceUpdateContact(
       req.params.contactId,
       req.body,
