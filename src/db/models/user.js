@@ -1,14 +1,14 @@
-import { model, Schema } from 'mongoose';
+import { model } from 'mongoose';
+import { Schema } from 'mongoose';
+
 
 const usersSchema = new Schema(
-  {
-    name: { type: String, required: true },
-    email: { type: String, required: true, unique: true },
-    password: { type: String, required: true },
-    createdAt: { type: Date },
-    updatedAt: { type: Date },
-  },
-  { timestamps: true, versionKey: false },
+    {
+        name: { type: String, required: true, },
+        email: { type: String, unique: true, required: true },
+        password: { type: String, required: true, }
+    },
+    { timestamps: true, versionKey: false },
 );
 
 usersSchema.methods.toJSON = function () {
@@ -17,4 +17,4 @@ usersSchema.methods.toJSON = function () {
   return obj;
 };
 
-export const User = model('users', usersSchema);
+export const User= model('users', usersSchema);
