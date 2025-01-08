@@ -2,6 +2,8 @@
 
 .env.example
 
+.env
+
 .vscode
 .DS_Store
 .idea
