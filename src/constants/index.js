@@ -5,9 +5,9 @@ export const SORT_ORDER = {
   DESC: 'desc',
 };
 
-export const FIFTEEN_MINUTES = 15 * 60 * 1000;
-export const THIRTY_DAYS = 30 * 24 * 60 * 60 * 1000;
-export const ONE_DAY = 24 * 60 * 60 * 1000;
+export const FIFTEEN_MINUTES = 15*60*1000;
+export const THIRTY_DAYS = 30*24*60*60*1000;
+export const ONE_DAY = 24*60*60*1000;
 
 export const SMTP = {
   SMTP_HOST: 'SMTP_HOST',
@@ -18,10 +18,10 @@ export const SMTP = {
 };
 
 export const TEMPLATES_DIR = path.join(process.cwd(), 'src', 'templates');
-export const TEMP_UPLOAD_DIR = path.join(process.cwd(), 'temp');
+export const TEMP_UPLOAD_DIR=path.join(process.cwd(), 'temp');
 
 export const CLOUDINARY = {
-  CLOUD_NAME: 'CLOUDINARY_CLOUD_NAME',
-  API_KEY: 'CLOUDINARY_API_KEY',
-  API_SECRET: 'CLOUDINARY_API_SECRET',
+  CLOUD_NAME: 'CLOUD_NAME',
+  API_KEY: 'API_KEY',
+  API_SECRET: 'API_SECRET',
 };
