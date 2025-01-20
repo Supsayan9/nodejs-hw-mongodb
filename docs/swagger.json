@@ -11,7 +11,7 @@
   },
   "servers": [
     {
-      "url": "https://nodejs-hw-mongodb-mjow.onrender.com"
+      "url": "https://nodejs-hw-mongodb-r20g.onrender.com"
     }
   ],
   "tags": [
@@ -221,41 +221,10 @@
             "schema": {
               "type": "string",
               "enum": [
-                "asc, desc"
+                "asc",
+                "desc"
               ],
               "example": "asc"
-            }
-          },
-          {
-            "in": "query",
-            "name": "totalItems",
-            "schema": {
-              "type": "number",
-              "example": 10
-            }
-          },
-          {
-            "in": "query",
-            "name": "totalPages",
-            "schema": {
-              "type": "number",
-              "example": 8
-            }
-          },
-          {
-            "in": "query",
-            "name": "hasNextPage",
-            "schema": {
-              "type": "boolean",
-              "example": true
-            }
-          },
-          {
-            "in": "query",
-            "name": "hasPreviousPage",
-            "schema": {
-              "type": "boolean",
-              "example": false
             }
           }
         ],
@@ -348,7 +317,7 @@
                   },
                   "phoneNumber": {
                     "type": "string",
-                    "example": 662345269
+                    "example": "662345269"
                   },
                   "isFavourite": {
                     "type": "boolean",
@@ -368,7 +337,7 @@
                   },
                   "photo": {
                     "type": "string",
-                    "example": "https://res.cloudinary.com/dh6h5bqnx/image/upload/v1719597092/cctnl1rniapmfrc4tdsh.jpg"
+                    "format": "binary"
                   }
                 }
               }
@@ -435,7 +404,7 @@
           },
           "phoneNumber": {
             "type": "string",
-            "example": 662345269
+            "example": "662345269"
           },
           "isFavourite": {
             "type": "boolean",
@@ -455,7 +424,7 @@
           },
           "photo": {
             "type": "string",
-            "example": "https://res.cloudinary.com/dh6h5bqnx/image/upload/v1719597092/cctnl1rniapmfrc4tdsh.jpg"
+            "format": "binary"
           }
         }
       }
