@@ -129,6 +129,11 @@
                   "photo": {
                     "type": "string",
                     "format": "binary"
+                  },
+                  "email": { 
+                    "type": "string", 
+                    "format": "email", 
+                    "example": "john.doe@example.com" 
                   }
                 }
               }
